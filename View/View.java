@@ -12,6 +12,7 @@ import Model.Structs.Location;
 import View.Components.Button;
 import View.Components.CheckBox;
 import View.Components.Frame;
+import View.Components.Label;
 import View.Components.LocationPanel;
 import View.Components.MainPanel;
 import View.Components.MarkerPanel;
@@ -46,9 +47,11 @@ public class View
                 this.startButton = new Button("Run");
                 menuBar.add(this.startButton);
 
+                menuBar.add(new Label("Delay:"));
                 this.delaySpinner = new DelaySpinner();
                 menuBar.add(this.delaySpinner);
 
+                menuBar.add(new Label("Population size:"));
                 this.populationSizeSpinner = new PopulationSizeSpinner();
                 menuBar.add(this.populationSizeSpinner);
 

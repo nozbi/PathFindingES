@@ -25,6 +25,7 @@ public class Controller
     {
         if(this.model.loadFile())
         {
+            this.view.resetStagesTextArea();
             this.view.setStartButtonEnabled(true);
         }
     }

@@ -28,18 +28,7 @@ public class Population
 
     public Population(Population populationParameter)
     {
-        for (int i = 0; i < populationParameter.individuals.length - 1; i++) 
-        {
-            for (int j = 0; j < populationParameter.individuals.length - i - 1; j++) 
-            {
-                if (populationParameter.individuals[j].getFitness() > populationParameter.individuals[j + 1].getFitness()) 
-                {
-                    Individual temp = populationParameter.individuals[j];
-                    populationParameter.individuals[j] = populationParameter.individuals[j + 1];
-                    populationParameter.individuals[j + 1] = temp;
-                }
-            }
-        }
+        this.sort(populationParameter.individuals, 0, populationParameter.individuals.length - 1);
        
         int numberOfIndividualsToBeReplaced = populationParameter.individuals.length / 2;
         for(int i = 0; i < numberOfIndividualsToBeReplaced; i++)
@@ -64,6 +53,55 @@ public class Population
             }
             this.individuals[i] = new Individual(this.maze, directions);
             this.individualsThatMoved.add(this.individuals[i]);
+        }
+    }
+
+    private void sort(Individual individualsParameter[], int firstIndexParameter, int lastIndexParameter)
+    {
+        if (firstIndexParameter < lastIndexParameter) 
+        {
+            int middleIndex = firstIndexParameter + (lastIndexParameter - firstIndexParameter) / 2;
+            sort(individualsParameter, firstIndexParameter, middleIndex);
+            sort(individualsParameter, middleIndex + 1, lastIndexParameter);
+            Individual leftIndividuals[] = new Individual[middleIndex - firstIndexParameter + 1];
+            Individual rightIndividuals[] = new Individual[lastIndexParameter - middleIndex];
+            for (int i = 0; i < leftIndividuals.length; i++)
+            {
+                leftIndividuals[i] = individualsParameter[firstIndexParameter + i];
+            }
+            for (int i = 0; i < rightIndividuals.length; i++)
+            {
+                rightIndividuals[i] = individualsParameter[middleIndex + 1 + i];
+            } 
+            int leftIndividualsIndex = 0;
+            int rightIndividualsIndex = 0;
+            int mergedIndividualsIndex = firstIndexParameter;
+            while ((leftIndividualsIndex < leftIndividuals.length) && (rightIndividualsIndex < rightIndividuals.length)) 
+            {
+                if (leftIndividuals[leftIndividualsIndex].getFitness() <= rightIndividuals[rightIndividualsIndex].getFitness()) 
+                {
+                    individualsParameter[mergedIndividualsIndex] = leftIndividuals[leftIndividualsIndex];
+                    leftIndividualsIndex++;
+                }
+                else 
+                {
+                    individualsParameter[mergedIndividualsIndex] = rightIndividuals[rightIndividualsIndex];
+                    rightIndividualsIndex++;
+                }
+                mergedIndividualsIndex++;
+            }
+            while (leftIndividualsIndex < leftIndividuals.length) 
+            {
+                individualsParameter[mergedIndividualsIndex] = leftIndividuals[leftIndividualsIndex];
+                leftIndividualsIndex++;
+                mergedIndividualsIndex++;
+            }
+            while (rightIndividualsIndex < rightIndividuals.length) 
+            {
+                individualsParameter[mergedIndividualsIndex] = rightIndividuals[rightIndividualsIndex];
+                rightIndividualsIndex++;
+                mergedIndividualsIndex++;
+            }
         }
     }
 
